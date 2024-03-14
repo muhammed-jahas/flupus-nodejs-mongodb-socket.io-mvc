@@ -9,19 +9,27 @@ const app = express();
 const server = http.createServer(app);
 const io = socketIO(server);
 
-// Connect to the database
+
 connectToDatabase();
 
-// Initialize socket.io
+
 initializeSocket(io);
 
-// Welcome message at the root URL
+
 app.get('/', (req, res) => {
   res.send('Welcome to Flupus!');
 });
 
-// Use the chatRouter for '/chat' routes
 app.use('/chat', chatRouter);
+
+cron.schedule('*/10 * * * *', () => {
+  console.log('Pinging server to keep it alive...');
+  https.get('https://flupus-server.onrender.com', (res) => {
+    console.log(`Ping response: ${res.statusCode}`);
+  }).on('error', (err) => {
+    console.error('Ping error:', err.message);
+  });
+});
 
 module.exports = {
   app,
