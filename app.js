@@ -25,9 +25,9 @@ app.get('/', (req, res) => {
 
 app.use('/chat', chatRouter);
 
-cron.schedule('*/10 * * * *', () => {
+cron.schedule('*/14 * * * *', () => {
   console.log('Pinging server to keep it alive...');
-  https.get('https://flupus-server.onrender.com', (res) => {
+  https.get('https://flupus-server-dpw1.onrender.com', (res) => {
     console.log(`Ping response: ${res.statusCode}`);
   }).on('error', (err) => {
     console.error('Ping error:', err.message);
